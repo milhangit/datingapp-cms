@@ -57,6 +57,29 @@ class AdminApiService {
     }
   }
 
+  // Create user
+  async createUser(userData) {
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/users`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to create user');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Create user error:', error);
+      throw error;
+    }
+  }
+
   // Update user
   async updateUser(userId, userData) {
     try {

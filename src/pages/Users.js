@@ -17,7 +17,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField,
   CircularProgress,
   Alert,
 } from '@mui/material';
@@ -28,10 +27,11 @@ import {
   CheckCircle,
   Visibility,
 } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
-import { format } from 'date-fns';
 
 function Users() {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -39,7 +39,6 @@ function Users() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [selectedUser, setSelectedUser] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
-  const [openEditDialog, setOpenEditDialog] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -106,9 +105,18 @@ function Users() {
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
-        User Management
-      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Typography variant="h4">
+          User Management
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate('/users/add')}
+        >
+          Add New User
+        </Button>
+      </Box>
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
           {error}
@@ -152,13 +160,23 @@ function Users() {
                         size="small"
                         color="primary"
                         onClick={() => handleViewUser(user)}
+                        title="View Details"
                       >
                         <Visibility />
                       </IconButton>
                       <IconButton
                         size="small"
+                        color="info"
+                        onClick={() => navigate(`/users/edit/${user.id}`)}
+                        title="Edit User"
+                      >
+                        <Edit />
+                      </IconButton>
+                      <IconButton
+                        size="small"
                         color={user.blocked ? 'success' : 'warning'}
                         onClick={() => handleBlockUser(user.id, user.blocked)}
+                        title={user.blocked ? 'Unblock' : 'Block'}
                       >
                         {user.blocked ? <CheckCircle /> : <Block />}
                       </IconButton>
@@ -166,6 +184,7 @@ function Users() {
                         size="small"
                         color="error"
                         onClick={() => handleDeleteUser(user.id)}
+                        title="Delete User"
                       >
                         <Delete />
                       </IconButton>

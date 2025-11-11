@@ -7,6 +7,8 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Users from './pages/Users';
+import AddUser from './pages/AddUser';
+import EditUser from './pages/EditUser';
 import Messages from './pages/Messages';
 import Matches from './pages/Matches';
 import Reports from './pages/Reports';
@@ -54,6 +56,26 @@ function AppRoutes() {
           <PrivateRoute>
             <Layout>
               <Users />
+            </Layout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/users/add"
+        element={
+          <PrivateRoute>
+            <Layout>
+              <AddUser />
+            </Layout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/users/edit/:userId"
+        element={
+          <PrivateRoute>
+            <Layout>
+              <EditUser />
             </Layout>
           </PrivateRoute>
         }
